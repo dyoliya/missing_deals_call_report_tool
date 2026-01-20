@@ -1,0 +1,12 @@
+*.xlsx
+*.csv
+*.db
+dist/
+build/
+*.exe
+.env
+*.cfg
+venv/
+__pycache__/
+*.json
+*.spec
