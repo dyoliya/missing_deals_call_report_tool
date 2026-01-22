@@ -73,7 +73,7 @@ def main():
         deal_id_dict = format_pipedrive_data(pipedrive_df)
         rc_df = read_rc_data(abandoned_calls_path, file)
         print("Looking up Deal IDs")
-        rc_df.loc[:, 'phone_number'] = rc_df['From'].astype(str)
+        rc_df.loc[:, 'phone_number'] = rc_df['ANI'].astype(str)
         mask_phone = rc_df['phone_number'].astype(str).str.len() == 11
         rc_df.loc[mask_phone, 'phone_number'] = rc_df.loc[mask_phone, 'phone_number'].astype(str).str[1:].str.strip()
         if not rc_df.empty:
