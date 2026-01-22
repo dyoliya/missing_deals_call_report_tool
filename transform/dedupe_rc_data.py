@@ -14,8 +14,8 @@ def remove_rc_duplicates():
 
         df = pd.read_excel(os.path.join(rc_path, file))
         df.sort_values(by=['Contact Time'], inplace=True)
-        df_duplicates = df[df.duplicated(subset='From', keep='first')]
-        df_remove_duplicates = df.drop_duplicates(subset='From', keep='first')
+        df_duplicates = df[df.duplicated(subset='ANI', keep='first')]
+        df_remove_duplicates = df.drop_duplicates(subset='ANI', keep='first')
 
         # Save removed duplicates RC Data
         df_remove_duplicates.to_excel(f"output/abandoned_calls_no_dupe/(No Duplicates) {file}", index=False)
