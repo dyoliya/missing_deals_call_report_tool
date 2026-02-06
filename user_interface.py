@@ -58,7 +58,7 @@ class App(customtkinter.CTk):
         """"""""""""""""""""""""
 
         # configure window
-        self.title("Missing Deals Report Tool v1.0.0")
+        self.title("Missing Deals Call Report Tool v1.0.4")
         self.geometry(self.center_main_window(800, 580))
         self.resizable(False, False)
         self.iconbitmap("misc/tool_icon.ico")

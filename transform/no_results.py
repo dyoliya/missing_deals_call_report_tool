@@ -76,7 +76,7 @@ def add_marketing_medium(no_result_final_df: pd.DataFrame) -> pd.DataFrame:
     def marketing_medium(row):
         team = row.get('Team')
 
-        if team == 'Ringless Voicemail - LG':
+        if team in ('Ringless Voicemail - LG', 'RVM - LG'):
             return 'RVM'
         elif team == 'Call Center':
             return 'Direct Mail'

@@ -255,14 +255,27 @@ def add_mailing_address(cm_db_final_df: pd.DataFrame) -> pd.DataFrame:
 
     # Define pandas function that will create person mailing address
     def add_mailing_address(row):
+        def clean(val):
+            if pd.isna(val) or val is None or str(val).strip() == "":
+                return ""
+            return str(val).strip()
 
         if row['address'].nunique() == 0:
             return None
         elif row['address'].nunique() == 1:
-            if row['address'].iloc[0] != '':
-                return f"{row['address'].iloc[0]}, {row['city'].iloc[0]}, {row['state_address'].iloc[0]}, {row['postal_code'].iloc[0]}, USA"
-            else:
+            address = clean(row['address'].iloc[0])
+
+            if not address:
                 return None
+
+            city = clean(row['city'].iloc[0])
+            state = clean(row['state_address'].iloc[0])
+            postal_code = clean(row['postal_code'].iloc[0])
+
+            parts = [address, city, state, postal_code, "USA"]
+            parts = [p for p in parts if p]
+
+            return ", ".join(parts)
         else:
             return "Multiple address entries"
     
@@ -353,7 +366,7 @@ def add_marketing_medium(cm_db_final_df: pd.DataFrame) -> pd.DataFrame:
     def marketing_medium(row):
         team = row.get('Team')
 
-        if team == 'Ringless Voicemail - LG':
+        if team in ('Ringless Voicemail - LG', 'RVM - LG'):
             return 'RVM'
         elif team == 'Call Center':
             return 'Direct Mail'

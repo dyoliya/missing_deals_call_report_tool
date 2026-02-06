@@ -365,17 +365,25 @@ def add_mailing_address(bottoms_up_exist: pd.DataFrame, bottoms_up_final_df: pd.
     def add_mailing_address(row):
         # Filter out blank addresses
         non_blank_row = row[row['address'] != '']
-        
+        def clean(val):
+            if pd.isna(val) or val is None or str(val).strip() == "":
+                return ""
+            return str(val).strip()
+
         # Check for unique addresses after filtering
         if non_blank_row['address'].nunique() == 0:
             return None
         elif non_blank_row['address'].nunique() == 1:
-            # Construct the mailing address using the non-blank row
-            address = non_blank_row['address'].iloc[0]
-            city = non_blank_row['city'].iloc[0]
-            state = non_blank_row['state'].iloc[0]
-            postal_code = non_blank_row['postal_code'].iloc[0]
-            return f"{address}, {city}, {state}, {postal_code}, USA"
+            address = clean(non_blank_row['address'].iloc[0])
+            city = clean(non_blank_row['city'].iloc[0])
+            state = clean(non_blank_row['state'].iloc[0])
+            postal_code = clean(non_blank_row['postal_code'].iloc[0])
+
+            parts = [address, city, state, postal_code, "USA"]
+            parts = [p for p in parts if p]  # remove empty values
+
+            return ", ".join(parts)
+
         else:
             return 'Multiple address entries'
     
@@ -491,7 +499,7 @@ def add_constant_columns(bottoms_up_final_df: pd.DataFrame) -> pd.DataFrame:
     def marketing_medium(row):
         team = row.get('Team')
 
-        if team == 'Ringless Voicemail - LG':
+        if team in ('Ringless Voicemail - LG', 'RVM - LG'):
             return 'RVM'
         elif team == 'Call Center':
             return 'Direct Mail'
